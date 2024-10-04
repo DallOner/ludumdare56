@@ -3,7 +3,12 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - OffRoad
+  - Checkpoint
+  - SpeedBoost
+  - JumpBoost
+  - LoopZone
   layers:
   - Default
   - TransparentFX
@@ -13,9 +18,9 @@ TagManager:
   - UI
   - 
   - 
-  - 
-  - 
-  - 
+  - Bounds
+  - Ground
+  - Actors
   - 
   - 
   - 
@@ -40,4 +45,13 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Background
+    uniqueID: 1573726253
+    locked: 0
+  - name: Platforms
+    uniqueID: 4059207353
+    locked: 0
+  - name: Actors
+    uniqueID: 3097824807
     locked: 0
