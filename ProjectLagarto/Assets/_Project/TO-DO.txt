@@ -1,0 +1,49 @@
+Game Mode: Last Man Standing.
+Time per match: 5:00
+
+Car
+- Vida del Carro
+- Power-Up: Misil
+- Power-Up: Misil Teledirigido
+- Power-Up: HP Recover
+- Power-Up: Shield (1Hit)
+- Power-Up: Drop Trash (Banana en MK, TNT en CTR)
+- Power-Up: Invincible (Estrella).
+
+Level Design
+- Camera con Auto (solid).
+- Blockout de Arena.
+- Out of Bounds
+- PU Positioning
+- Start Spawns
+
+3D
+- First Chasis.
+- Second Chasis.
+- Bad Chasis
+- Very Bad Chasis
+- Personaje
+- Wheels
+- PUs Models
+- 
+
+UI/UX
+- Screen: Game Menu
+- Screen: Credits
+- Screen: Game Title
+- HUD: Life Bar
+- HUD: PU icons
+- HUD: Velocimetro (?)
+- HUD: Timer
+
+Audio
+- Cancion de Fondo
+- SFX: Motor
+- SFX: Hit
+- SFX: Hurt
+- SFX: Using a PU.
+- VO: Tagline del Personaje
+- VO: Cuando usa un PU.
+- VO: Cuando es golpeado
+- VO: Cuando gana la partida.
+- VO: Cuando queda eliminado.
