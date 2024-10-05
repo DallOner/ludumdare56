@@ -1,0 +1,6 @@
+newmtl 128_grey_2
+map_Kd textures/128_grey_2.D
+
+newmtl 16_green_1
+map_Kd textures/16_green_1.D
+

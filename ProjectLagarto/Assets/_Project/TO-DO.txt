@@ -12,7 +12,7 @@ Car
 
 Level Design
 - Camera con Auto (solid). [DONE]
-- Blockout de Arena. 
+- Blockout de Arena	   []
 - Out of Bounds
 - PU Positioning
 - Start Spawns
