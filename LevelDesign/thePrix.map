@@ -15,7 +15,6 @@
 "_tb_name" "Floor"
 "_tb_id" "1"
 "_tb_layer_sort_index" "0"
-"_tb_layer_omit_from_export" "1"
 // brush 0
 {
 ( -496 -56 -480 ) ( -496 -55 -480 ) ( -496 -56 -479 ) 16_green_1 [ 0 -1 0 0 ] [ 0 0 -1 0 ] 180 1 1
@@ -33,7 +32,6 @@
 "_tb_name" "Walls"
 "_tb_id" "2"
 "_tb_layer_sort_index" "1"
-"_tb_layer_omit_from_export" "1"
 // brush 0
 {
 ( -496 -520 -104 ) ( -496 -519 -104 ) ( -496 -520 -103 ) 128_grey_2 [ 0 -1 0 0 ] [ 0 0 -1 0 ] 0 1 1
