@@ -11,8 +11,8 @@ Car
 - Power-Up: Invincible (Estrella).
 
 Level Design
-- Camera con Auto (solid).
-- Blockout de Arena.
+- Camera con Auto (solid). [DONE]
+- Blockout de Arena. 
 - Out of Bounds
 - PU Positioning
 - Start Spawns
@@ -25,7 +25,6 @@ Level Design
 - Personaje
 - Wheels
 - PUs Models
-- 
 
 UI/UX
 - Screen: Game Menu
