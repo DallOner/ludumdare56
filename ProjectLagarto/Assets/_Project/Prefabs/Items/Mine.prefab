@@ -127,7 +127,7 @@ MonoBehaviour:
   damage: 100
   _hitLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 2048
   explosionEffectPrefab: {fileID: 1732744380135048, guid: e91211a5fed0a41faa964218272567af,
     type: 3}
 --- !u!54 &4678417561750111432
