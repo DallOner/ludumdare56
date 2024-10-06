@@ -128,11 +128,10 @@ MonoBehaviour:
   _firePoint: {fileID: 0}
   _hitLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 2048
   lineRenderer: {fileID: 0}
   lineDuration: 0.05
   minePrefab: {fileID: 0}
-  placementPoint: {fileID: 0}
 --- !u!120 &31152353006639236
 LineRenderer:
   serializedVersion: 2
