@@ -134,6 +134,7 @@ GameObject:
   - component: {fileID: 3576225876880492432}
   - component: {fileID: 9007979184695386607}
   - component: {fileID: 3173014366473282775}
+  - component: {fileID: -2259689803207221880}
   m_Layer: 0
   m_Name: MisileAuto
   m_TagString: Untagged
@@ -336,3 +337,19 @@ LineRenderer:
   m_UseWorldSpace: 1
   m_Loop: 0
   m_ApplyActiveColorSpace: 1
+--- !u!114 &-2259689803207221880
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4908318279024417352}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f2ae97fb8a349e1d938f8dff85d4d95, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 100
+  turnSpeed: 50
+  lifeTime: 100
+  lineRenderer: {fileID: 0}
