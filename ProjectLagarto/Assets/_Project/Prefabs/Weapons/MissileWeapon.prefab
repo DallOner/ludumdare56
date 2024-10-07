@@ -126,7 +126,7 @@ MonoBehaviour:
   _currentAmmo: 0
   _reloadTime: 2
   _fireRate: 0.2
-  _firePoint: {fileID: 8448971588963274135}
+  _firePoint: {fileID: 7548587037033721838}
   _hitLayers:
     serializedVersion: 2
     m_Bits: 2048
