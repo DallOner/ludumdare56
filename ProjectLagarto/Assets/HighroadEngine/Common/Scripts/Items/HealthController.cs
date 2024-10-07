@@ -2,7 +2,6 @@
 using Unity.Mathematics;
 using UnityEngine.Events;
 using UnityEditor;
-using UnityEditor.AnimatedValues;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
