@@ -12,21 +12,66 @@ using System.IO;
 using System;
 using System.Text.RegularExpressions;
 
+/// <summary>
+/// Controlador que maneja la salud y el estado de vida del jugador.
+/// </summary>
 public class HealthController : MonoBehaviour, IDamageReceiver, IHealReceiver
 {
     [Header("Health Settings")]
-    [SerializeField] private int _initialHealth = 100;  // Vida inicial máxima
-    private int _currentHealth;                         // Vida actual
+    [SerializeField]
+    private int _initialHealth = 100;  // Vida inicial máxima
+    private int _currentHealth;        // Vida actual
 
     [Header("Shield Settings")]
     private bool _isShieldActive = false;               // Indica si el escudo está activo
     private GameObject _shieldEffectInstance;           // Referencia al efecto visual del escudo
 
     [Header("HUD and Animation")]
-    [SerializeField] private Animator _animator;        // Referencia al Animator para manejar animaciones
-    [SerializeField] private HealthBar _healthBar;      // Referencia a la barra de vida UI
+    [SerializeField]
+    private Animator _animator;        // Referencia al Animator para manejar animaciones
+    [SerializeField]
+    private HealthBar _healthBar;      // Referencia a la barra de vida UI
 
     private bool _isDead = false;  // Estado de muerte para evitar la repetición de acciones post-muerte
+
+    // Eventos
+    public event Action<PlayerController> OnPlayerDeath; // Evento que se dispara cuando el jugador muere
+
+    /// <summary>
+    /// Propiedad para verificar si el jugador está vivo.
+    /// </summary>
+    public bool IsAlive => !_isDead;
+
+    /// <summary>
+    /// Propiedad para obtener la salud actual del jugador.
+    /// </summary>
+    public int CurrentHealth => _currentHealth;
+
+    /// <summary>
+    /// Propiedad almacenar el punto de inicio de jugador
+    /// </summary>
+    public Vector3 InitialPosition { get; private set; }
+
+    /// <summary>
+    /// Propiedad almacenar cantidad de muertes por un jugador
+    /// </summary>
+    public int DeathCount { get; private set; }
+
+    public void IncrementDeathCount()
+    {
+        DeathCount++;
+    }
+
+    public void ResetDeaths()
+    {
+        DeathCount = 0;
+    }
+
+    public void SetInitialPosition(Vector3 position)
+    {
+        InitialPosition = position;
+    }
+
 
     /// <summary>
     /// Inicializa la vida y la barra de vida cuando el objeto comienza.
@@ -48,7 +93,10 @@ public class HealthController : MonoBehaviour, IDamageReceiver, IHealReceiver
         _currentHealth = _initialHealth;
         _isDead = false;
         UpdateHUD();
-        _animator.SetBool("IsDeath", false);  // Asegura que la animación de muerte no esté activa
+        if (_animator != null)
+        {
+            _animator.SetBool("IsDeath", false);  // Asegura que la animación de muerte no esté activa
+        }
     }
 
     /// <summary>
@@ -103,10 +151,15 @@ public class HealthController : MonoBehaviour, IDamageReceiver, IHealReceiver
     private void PlayerDeath()
     {
         _isDead = true;
-        _animator.SetBool("IsDeath", true);  // Activar la animación de muerte
+        if (_animator != null)
+        {
+            _animator.SetBool("IsDeath", true);  // Activar la animación de muerte
+        }
 
-        // Lógica adicional que se puede agregar cuando el jugador muere, como desactivar controles, etc.
         Debug.Log($"{gameObject.name} ha muerto.");
+
+        // Disparar el evento de muerte pasando el PlayerController
+        OnPlayerDeath?.Invoke(GetComponent<PlayerController>());
     }
 
     /// <summary>

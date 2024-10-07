@@ -14,37 +14,37 @@ namespace MoreMountains.HighroadEngine
 	/// If you want to create a vehicle using this controller, you'll need to setup its suspension correctly, and pay attention to the weight repartition.
 	/// For that, you can simply duplicate one of the demo vehicles, or have a look at the documentation that explains how to setup a vehicle, step by step.
 	/// </summary>
-	public class SolidController : BaseController 
+	public class SolidController : BaseController
 	{
 		/// The engine's power
 		public float EngineForce = 1000;
 		[Header("Vehicule Physics")]
 		/// Point of gravity of the car is set below. This helps the Unity Physics with car stability
-		public Vector3 CenterOfMass = new Vector3(0, -1, 0); 
-		[Range(0.0f,5f)]
+		public Vector3 CenterOfMass = new Vector3(0, -1, 0);
+		[Range(0.0f, 5f)]
 		/// The distance to the ground at which we consider the car is grounded
 		public float GroundDistance = 1f;
-		[Range(1,10)]
+		[Range(1, 10)]
 		/// the penalty applied when going offroad
 		public float OffroadPenaltyFactor = 2f;
 		/// the wheel's grip force. The higher the value, the less the car will slide when turning
 		public float CarGrip = 10f;
 		/// The speed above which the vehicle is considered as going full throttle. The vehicle's speed can be higher than that
 		public float FullThrottleVelocity = 30;
-		[Range(0.0f,5f)]
+		[Range(0.0f, 5f)]
 		/// The minimum required speed for the vehicle to turn
 		public float MinimalTurningSpeed = 1f;
-		[Range(-5.0f,5f)]
+		[Range(-5.0f, 5f)]
 		/// The height at which forward force will be applied
 		public float ForwardForceHeight = 1f;
 		/// Additional torque force based on speed
 		public AnimationCurve TorqueCurve;
 		/// Rotation force when going backward
 		public AnimationCurve BackwardForceCurve;
-		[Range(0.0f,1f)]
+		[Range(0.0f, 1f)]
 		/// Grip factor multiplier. The higher that value, the more this vehicle will stick to the road, even at high speeds
 		public float GripSpeedFactor = 0.02f;
-		[Range(0,200)]
+		[Range(0, 200)]
 		/// The vehicle's maximum grip value. 
 		public int MaxGripValue = 100;
 
@@ -61,8 +61,9 @@ namespace MoreMountains.HighroadEngine
 		public float SpringTorqueForce = 1000f;
 		/// An event triggered when the vehicle collides with something
 		public UnityAction<Collision> OnCollisionEnterWithOther;
-        /// An event triggered when the vehicle is respawned
-        public UnityAction OnRespawn;
+		/// An event triggered when the vehicle is respawned
+		public UnityAction OnRespawn;
+		private bool _canControl = true;  // Controla si el jugador puede controlar el vehículo
 
 		protected float _springForce = 0f;
 		protected float _damperForce = 0f;
@@ -73,21 +74,21 @@ namespace MoreMountains.HighroadEngine
 		protected LayerMask _noLayerMask = ~0;
 
 		/// Gears enum. Car can be forward driving or backward driving (reverse)
-		public enum Gears {forward, reverse}
+		public enum Gears { forward, reverse }
 		/// The current gear value
-		public Gears CurrentGear {get; protected set;}
+		public Gears CurrentGear { get; protected set; }
 		/// Current engine force value used by wheels
-		public Vector3 CurrentEngineForceValue { get; protected set;}
+		public Vector3 CurrentEngineForceValue { get; protected set; }
 		/// Gets a value indicating whether this car is offroad.
-		public virtual bool IsOffRoad 
-		{ 
+		public virtual bool IsOffRoad
+		{
 			get { return (_groundGameObject != null && _groundGameObject.tag == "OffRoad"); }
 		}
 		/// <summary>
 		/// Gets the normalized speed.
 		/// </summary>
 		/// <value>The normalized speed.</value>
-		public virtual float NormalizedSpeed 
+		public virtual float NormalizedSpeed
 		{
 			get { return Mathf.InverseLerp(0f, FullThrottleVelocity, Mathf.Abs(Speed)); }
 		}
@@ -95,7 +96,7 @@ namespace MoreMountains.HighroadEngine
 		/// Returns true if vehicle is going forward
 		/// </summary>
 		/// <value><c>true</c> if forward; otherwise, <c>false</c>.</value>
-		public virtual bool Forward 
+		public virtual bool Forward
 		{
 			get { return transform.InverseTransformDirection(_rigidbody.velocity).z > 0; }
 		}
@@ -103,7 +104,7 @@ namespace MoreMountains.HighroadEngine
 		/// Returns true if vehicle is braking
 		/// </summary>
 		/// <value><c>true</c> if braking; otherwise, <c>false</c>.</value>
-		public virtual bool Braking 
+		public virtual bool Braking
 		{
 			get { return Forward && (CurrentGasPedalAmount < 0); }
 		}
@@ -133,12 +134,12 @@ namespace MoreMountains.HighroadEngine
 		}
 
 		/// The current lateral speed value of the vehicle
-		public virtual float SlideSpeed {get; protected set;}
+		public virtual float SlideSpeed { get; protected set; }
 
 		/// <summary>
 		/// Physics initialization
 		/// </summary>
-		protected override void Awake() 
+		protected override void Awake()
 		{
 			base.Awake();
 
@@ -148,24 +149,30 @@ namespace MoreMountains.HighroadEngine
 			CurrentGear = Gears.forward;
 		}
 
-        /// <summary>
-        /// Unity start function
-        /// </summary>
-        protected override void Start()
-        {
-            base.Start();
-            _startPosition = transform.position;
-            _startRotation = transform.rotation;
-        }
-
-        /// <summary>
-        /// Update main function
-        /// </summary>
-        protected virtual void Update() 
+		/// <summary>
+		/// Unity start function
+		/// </summary>
+		protected override void Start()
 		{
+			base.Start();
+			_startPosition = transform.position;
+			_startRotation = transform.rotation;
+		}
+
+		/// <summary>
+		/// Update main function
+		/// </summary>
+		protected virtual void Update()
+		{
+			if (!_canControl)
+			{
+				// Si el control está deshabilitado, evitar procesamiento adicional.
+				return;
+			}
+
 			UpdateGroundSituation();
 
-			/*	MMDebug.DebugOnScreen("Steering", CurrentSteeringAmount);
+			MMDebug.DebugOnScreen("Steering", CurrentSteeringAmount);
 			MMDebug.DebugOnScreen("acceleration", CurrentGasPedalAmount);
 			MMDebug.DebugOnScreen("Speed", Speed);
 			MMDebug.DebugOnScreen("SlideSpeed", SlideSpeed);
@@ -173,15 +180,15 @@ namespace MoreMountains.HighroadEngine
 			MMDebug.DebugOnScreen("Forward", Forward);
 			MMDebug.DebugOnScreen("Braking", Braking);
 			MMDebug.DebugOnScreen("_engineForce", CurrentEngineForceValue);
-			MMDebug.DebugOnScreen("_rotationForce", CurrentRotationForceValue);
+			//MMDebug.DebugOnScreen("_rotationForce", CurrentRotationForceValue);
 			MMDebug.DebugOnScreen("ForwardNormalizedSpeed", ForwardNormalizedSpeed);
-			MMDebug.DebugOnScreen("HorizontalAngle", HorizontalAngle);*/
+			MMDebug.DebugOnScreen("HorizontalAngle", HorizontalAngle);
 		}
 
 		/// <summary>
 		/// Updates the ground situation for this car.
 		/// </summary>
-		protected virtual void UpdateGroundSituation() 
+		protected virtual void UpdateGroundSituation()
 		{
 			IsGrounded = Physics.Raycast(transform.position, -transform.up, out _hit, GroundDistance, _noLayerMask, QueryTriggerInteraction.Ignore) ? true : false;
 			_groundGameObject = _hit.transform != null ? _hit.transform.gameObject : null;
@@ -191,7 +198,7 @@ namespace MoreMountains.HighroadEngine
 		/// Fixed update.
 		/// We apply physics and input evaluation.
 		/// </summary>
-		protected virtual void FixedUpdate() 
+		protected virtual void FixedUpdate()
 		{
 			UpdateEngineForceValue();
 
@@ -210,7 +217,7 @@ namespace MoreMountains.HighroadEngine
 			// we use this intermediary variable to account for backwards mode
 			float gasPedalForce = CurrentGasPedalAmount;
 
-			if (IsOffRoad) 
+			if (IsOffRoad)
 			{
 				gasPedalForce /= OffroadPenaltyFactor;
 			}
@@ -228,7 +235,8 @@ namespace MoreMountains.HighroadEngine
 				if ((Speed > MinimalTurningSpeed) && (CurrentGear == Gears.forward) && Forward)
 				{
 					// braking
-				} else
+				}
+				else
 				{
 					// Otherwise, car is slow enough to go reverse
 					CurrentGear = Gears.reverse;
@@ -247,10 +255,10 @@ namespace MoreMountains.HighroadEngine
 		protected virtual void UpdateTorqueRotation()
 		{
 			if (IsGrounded)
-			{ 
+			{
 				Vector3 torque = transform.up * Time.fixedDeltaTime * _rigidbody.mass * TorqueCurve.Evaluate(NormalizedSpeed) * SteeringSpeed;
 				// Going backward, we invert steering
-				if (CurrentGear == Gears.reverse) 
+				if (CurrentGear == Gears.reverse)
 				{
 					torque = -torque;
 				}
@@ -312,7 +320,7 @@ namespace MoreMountains.HighroadEngine
 				resetPosition = _startPosition;
 				resetRotation = _startRotation;
 			}
-			else 
+			else
 			{
 				Transform resetTransform = _currentWaypoint == 0 ? _checkpoints[_checkpoints.Length - 1] : _checkpoints[_currentWaypoint - 1];
 				resetPosition = resetTransform.position;
@@ -323,8 +331,8 @@ namespace MoreMountains.HighroadEngine
 			transform.position = resetPosition;
 			transform.rotation = resetRotation;
 
-            OnRespawn();
-        }
+			OnRespawn();
+		}
 
 		/// <summary>
 		/// Raises the collision enter event.
@@ -332,7 +340,7 @@ namespace MoreMountains.HighroadEngine
 		/// <param name="other">Other object.</param>
 		protected virtual void OnCollisionEnter(Collision other)
 		{
-			if (OnCollisionEnterWithOther != null) 
+			if (OnCollisionEnterWithOther != null)
 			{
 				OnCollisionEnterWithOther(other);
 			}
@@ -341,11 +349,28 @@ namespace MoreMountains.HighroadEngine
 		/// <summary>
 		/// Draws debug info
 		/// </summary>
-		protected virtual void OnDrawGizmos() 
+		protected virtual void OnDrawGizmos()
 		{
 			// distance to ground
 			Gizmos.color = Color.green;
-			Gizmos.DrawLine (transform.position, transform.position - (transform.up * (GroundDistance)));
+			Gizmos.DrawLine(transform.position, transform.position - (transform.up * (GroundDistance)));
+		}
+
+		/// <summary>
+		/// Habilita el control del vehículo.
+		/// </summary>
+		public void EnableControl()
+		{
+			_canControl = true;
+		}
+
+		/// <summary>
+		/// Deshabilita el control del vehículo.
+		/// </summary>
+		public void DisableControl()
+		{
+			_canControl = false;
+			_rigidbody.velocity = Vector3.zero;  // Detener el movimiento
 		}
 	}
 }

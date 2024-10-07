@@ -8,29 +8,70 @@ using System.IO;
 using System;
 using System.Text.RegularExpressions;
 
+// <summary>
+/// Controlador que maneja el equipamiento y uso de armas del jugador.
+/// </summary>
 public class WeaponController : MonoBehaviour
 {
-    [SerializeField] private IWeapon _currentWeapon;
+    [SerializeField]
+    private IWeapon _currentWeapon;
 
-    // Método para equipar un arma
+    private bool _canUseWeapon = true;  // Indica si el jugador puede usar su arma
+
+    /// <summary>
+    /// Método para equipar un arma.
+    /// </summary>
+    /// <param name="newWeapon">El arma nueva a equipar.</param>
     public void EquipWeapon(IWeapon newWeapon)
     {
         _currentWeapon = newWeapon;
         Debug.Log($"Arma equipada: {newWeapon.GetType().Name}");
     }
 
-    private void Update()
+    /// <summary>
+    /// Habilita el uso del arma.
+    /// </summary>
+    public void EnableWeapon()
     {
-         // Si se presiona la tecla "Espacio", el arma dispara
-    if (Input.GetKeyDown(KeyCode.Space) && _currentWeapon != null)
+        _canUseWeapon = true;
+    }
+
+    /// <summary>
+    /// Deshabilita el uso del arma.
+    /// </summary>
+    public void DisableWeapon()
     {
+        _canUseWeapon = false;
+    }
+
+    /// <summary>
+    /// Dispara el arma si es posible.
+    /// </summary>
+    public void Shoot()
+    {
+        if (!_canUseWeapon || _currentWeapon == null)
+            return;
+
         _currentWeapon.Shoot();
     }
 
-    // Si se presiona la tecla "R", el arma se recarga
-    if (Input.GetKeyDown(KeyCode.R) && _currentWeapon != null)
+    /// <summary>
+    /// Recarga el arma si es posible.
+    /// </summary>
+    public void Reload()
     {
+        if (!_canUseWeapon || _currentWeapon == null)
+            return;
+
         _currentWeapon.Reload();
     }
+
+    public void ResetWeapons()
+    {
+        // Lógica para quitar todas las armas al jugador
+        // Por ejemplo, limpiar la lista de armas y equipar un arma básica o ninguna
+        //equippedWeapons.Clear();
+        _currentWeapon = null;
     }
+
 }
