@@ -126,15 +126,19 @@ MonoBehaviour:
   _currentAmmo: 0
   _reloadTime: 2
   _fireRate: 0.2
-  _firePoint: {fileID: 0}
+  _firePoint: {fileID: 8448971588963274135}
   _hitLayers:
     serializedVersion: 2
-    m_Bits: 4294967295
-  lineRenderer: {fileID: 0}
+    m_Bits: 2048
+  lineRenderer: {fileID: 6144289921684546993}
   lineDuration: 0.05
-  detectionRadius: 10
-  missilePrefab: {fileID: 0}
-  missileLaunchPoint: {fileID: 0}
+  missilePrefab: {fileID: 4908318279024417352, guid: 5b6b0b05a81f7f86b996192de5bd3938,
+    type: 3}
+  launchPoint: {fileID: 8448971588963274135}
+  detectionRange: 100
+  enemyLayerMask:
+    serializedVersion: 2
+    m_Bits: 2048
 --- !u!120 &6144289921684546993
 LineRenderer:
   serializedVersion: 2

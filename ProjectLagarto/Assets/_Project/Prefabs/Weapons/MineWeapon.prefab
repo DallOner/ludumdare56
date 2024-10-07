@@ -125,13 +125,14 @@ MonoBehaviour:
   _currentAmmo: 0
   _reloadTime: 2
   _fireRate: 0.2
-  _firePoint: {fileID: 0}
+  _firePoint: {fileID: 1104199689237569933}
   _hitLayers:
     serializedVersion: 2
     m_Bits: 2048
   lineRenderer: {fileID: 0}
   lineDuration: 0.05
-  minePrefab: {fileID: 0}
+  minePrefab: {fileID: 4000232498244879711, guid: e8a066586472ef9559b89726b345ac7a,
+    type: 3}
 --- !u!120 &31152353006639236
 LineRenderer:
   serializedVersion: 2
