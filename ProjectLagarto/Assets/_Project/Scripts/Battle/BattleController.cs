@@ -22,10 +22,14 @@ public class BattleController : MonoBehaviour
     private bool battleStarted = false;
     public LeaderboardUI leaderboardUI; // Asignar en el Inspector
 
-    private void Start()
+    private IEnumerator Start()
     {
+        // Espera hasta el final del frame para asegurar que todos los objetos se hayan inicializado
+        yield return new WaitForEndOfFrame();
+
         // Obtener todos los jugadores en la escena
         players = FindObjectsOfType<PlayerController>().ToList();
+        Debug.Log($"Número de jugadores encontrados: {players.Count}");
 
         // Crear la fábrica de modos de batalla
         IBattleModeFactory battleModeFactory = new BattleModeFactory(battleDuration, isTeamMode);
@@ -37,8 +41,7 @@ public class BattleController : MonoBehaviour
         battleMode.OnBattleEnded += OnBattleEnded;
         battleMode.OnLeaderboardUpdated += UpdateLeaderboard;
 
-        // Inicializar el modo de batalla con los jugadores
-        battleMode.Initialize(players);
+        
 
         // Iniciar la cuenta regresiva para la batalla
         StartCoroutine(StartBattleCountdown());
@@ -54,6 +57,9 @@ public class BattleController : MonoBehaviour
 
     private IEnumerator StartBattleCountdown()
     {
+        // Inicializar el modo de batalla con los jugadores
+        battleMode.Initialize(players);
+
         SetPlayersActive(false);
 
         for (int i = initialCountdown; i > 0; i--)

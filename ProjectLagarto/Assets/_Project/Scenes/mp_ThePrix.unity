@@ -2234,6 +2234,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6854645160625640467, guid: 8913753a83bae32bf88e0f8490574f1b,
         type: 3}
+      propertyPath: battleType
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6854645160625640467, guid: 8913753a83bae32bf88e0f8490574f1b,
+        type: 3}
       propertyPath: initialCountdown
       value: 3
       objectReference: {fileID: 0}

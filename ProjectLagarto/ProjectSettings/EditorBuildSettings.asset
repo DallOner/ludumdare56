@@ -17,7 +17,7 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/HighroadEngine/Demos/TinyCars/Scenes/TheBridge.unity
     guid: ec8793f7f955d804eabe73ee0434188c
-  - enabled: 1
+  - enabled: 0
     path: Assets/HighroadEngine/Demos/Solid/Scenes/Playground.unity
     guid: 690323f6405fe42d9b45e0362b07734c
   - enabled: 0
@@ -41,4 +41,7 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/HighroadEngine/Demos/Solid/Scenes/MonacoTrack.unity
     guid: 727e30e5d151d4b4890e073c5620db62
+  - enabled: 1
+    path: Assets/_Project/Scenes/mp_ThePrix.unity
+    guid: db8d29390befa644aa8f2bad9d721854
   m_configObjects: {}
